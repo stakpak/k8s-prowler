@@ -61,4 +61,4 @@ map({
 }
 ' /prowler/output/report.json > cluster-policy-report.json
 
-./kubectl apply -f cluster-policy-report.json
+./kubectl replace -f cluster-policy-report.json
