@@ -1,0 +1,11 @@
+image:
+  repository: ghcr.io/devopzilla/k8s-prowler
+  pullPolicy: IfNotPresent
+  tag: ""
+
+prowler:
+  accountID: "111122223333"
+  roleName: prowler
+  region: eu-north-1
+  groupCheck: null
+

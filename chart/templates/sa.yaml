@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::{{ required "prowler.accountID is required" .Values.prowler.accountID }}:role/{{ required "prowler.roleName is required" .Values.prowler.roleName }}"
