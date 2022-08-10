@@ -10,6 +10,7 @@ containers:
       - ALL
     runAsNonRoot: true
     runAsUser: 34000
+    allowPrivilegeEscalation: false
   command: ["./entrypoint.sh"]
   args:
   - -r 
