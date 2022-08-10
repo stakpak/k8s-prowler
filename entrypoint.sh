@@ -61,4 +61,5 @@ map({
 }
 ' /prowler/output/report.json > cluster-policy-report.json
 
-./kubectl replace -f cluster-policy-report.json
+# cannot use apply, this will exceed maximum allowed annotation length for large reports
+./kubectl replace -f cluster-policy-report.json || ./kubectl create -f cluster-policy-report.json
