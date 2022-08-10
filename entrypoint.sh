@@ -20,6 +20,8 @@ def status_mapping: {
     "INFO": "skip",
     "WARNING": "warn",
 };
+def counter(stream):
+  reduce stream as $s ({}; .[$s|tostring] += 1);
 map({ 
     source: "Prowler", 
     result: (."Status" |=  status_mapping[.])."Status", 
@@ -54,13 +56,7 @@ map({
         labels: {
         },
     },
-    summary: {
-        pass: 0,
-        warn: 0,
-        error: 0,
-        skip: 0,
-        fail: (. | length)
-    },    
+    summary: ({pass: 0, warn: 0, error: 0, skip: 0, fail: 0} * counter(.[] | .result)),
     results: .
 }
 ' /prowler/output/report.json > cluster-policy-report.json
