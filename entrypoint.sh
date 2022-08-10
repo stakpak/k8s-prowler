@@ -2,21 +2,37 @@
 set -e
 
 
-./prowler "$@" -z -q -b -M json -F report
+./prowler "$@" -z -b -M json -F report
 
+# mapping Critical -> high due to https://github.com/kyverno/kyverno/issues/4324
+# mapping Inormational -> low due to https://github.com/kyverno/kyverno/issues/4324
 jq -s '
+def severity_mapping: {
+    "Critical": "high",
+    "High": "high",
+    "Medium": "medium",
+    "Low": "low",
+    "Informational": "low",
+};
+def status_mapping: {
+    "FAIL": "fail",
+    "PASS": "pass",
+    "INFO": "skip",
+    "WARNING": "warn",
+};
 map({ 
     source: "Prowler", 
-    result: "fail", 
+    result: (."Status" |=  status_mapping[.])."Status", 
     scored: true, 
     category: ."Service",
-    policy: ."Control", 
+    policy: ."Level", 
+    rule: ."Control",
     message: ."Message", 
     timestamp:  {
         seconds: (."Timestamp" |= fromdateiso8601)."Timestamp", 
         nanos: 0
     },
-    severity: (."Severity" |= ascii_downcase)."Severity", 
+    severity:  (."Severity" |=  severity_mapping[.])."Severity", 
     properties: { 
         controlID: ."Control ID", 
         region: ."Region", 
@@ -39,6 +55,10 @@ map({
         },
     },
     summary: {
+        pass: 0,
+        warn: 0,
+        error: 0,
+        skip: 0,
         fail: (. | length)
     },    
     results: .
