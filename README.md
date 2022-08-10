@@ -5,6 +5,8 @@
 
 You have to add IRSA permissions to allow prowler to scan your account
 
+if you don't have an OIDC provider for your cluster follow these steps https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
+
 1) Initialize variables
 ```
 ACCOUNT_ID="111122223333"
