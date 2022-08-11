@@ -4,10 +4,32 @@ metadata:
   name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  schedule: "0 0 * * *"
+  schedule: {{ .Values.prowler.cronSchedule }}
   jobTemplate:
     spec:
       template:
         spec:
-          {{- include "prowler-pod" . | nindent 10 }}
+          serviceAccountName: {{ .Chart.Name }}
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+              runAsNonRoot: true
+              runAsUser: 34000
+              allowPrivilegeEscalation: false
+            command: ["./entrypoint.sh"]
+            args:
+            - -r 
+            - {{ required "prowler.region is required" .Values.prowler.region }}
+            - -f 
+            - {{ required "prowler.region is required" .Values.prowler.region }}
+            {{- with .Values.prowler.groupCheck }}
+            - -g 
+            - {{ . }}
+            {{- end }}
+          restartPolicy: OnFailure
       backoffLimit: 2

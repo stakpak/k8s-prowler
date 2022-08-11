@@ -8,4 +8,5 @@ prowler:
   roleName: prowler
   region: eu-north-1
   groupCheck: null
+  cronSchedule: "0 0 * * *"
 
