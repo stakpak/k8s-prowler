@@ -1,4 +1,8 @@
+{{- if semverCompare ">=1.21" .Capabilities.KubeVersion.Version }}
+apiVersion: batch/v1
+{{- else }}
 apiVersion: batch/v1beta1
+{{- end }}
 kind: CronJob
 metadata:
   name: {{ .Chart.Name }}
