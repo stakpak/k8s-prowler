@@ -24,15 +24,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
 
       - name: Chart | Push
         uses: appany/helm-oci-chart-releaser@v0.3.0
         with:
-          name: prowler
+          name: charts/k8s-prowler
           repository: devopzilla
-          tag: ${{ env.RELEASE_VERSION }}
+          tag: ${{ steps.vars.outputs.tag }}
           path: chart
           registry: ${{ env.REGISTRY }}
           registry_username: ${{ github.actor }}
