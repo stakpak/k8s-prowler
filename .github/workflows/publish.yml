@@ -85,7 +85,5 @@ jobs:
           helmv3: 3.7.2
           command: |
             helmv3 package chart
-
             PKG_NAME=`ls *.tgz`
-
-            helmv3 push ${PKG_NAME} oci://ghcr.io/devopzilla/charts
+            HELM_EXPERIMENTAL_OCI=1 helmv3 push ${PKG_NAME} oci://ghcr.io/devopzilla/charts
