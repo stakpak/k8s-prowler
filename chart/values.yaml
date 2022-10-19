@@ -1,5 +1,5 @@
 image:
-  repository: ghcr.io/devopzilla/k8s-prowler
+  repository: ghcr.io/devopzilla/prowler
   pullPolicy: IfNotPresent
   tag: ""
 
@@ -9,4 +9,3 @@ prowler:
   region: eu-north-1
   groupCheck: null
   cronSchedule: "0 0 * * *"
-
