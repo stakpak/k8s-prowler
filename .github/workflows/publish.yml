@@ -86,4 +86,7 @@ jobs:
           command: |
             helmv3 package chart
             PKG_NAME=`ls *.tgz`
-            HELM_EXPERIMENTAL_OCI=1 helmv3 push ${PKG_NAME} oci://ghcr.io/devopzilla/charts
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+            HELM_EXPERIMENTAL_OCI=1 helmv3 push ${PKG_NAME} oci:// ${{ env.REGISTRY }}/devopzilla/charts
