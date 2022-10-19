@@ -84,7 +84,7 @@ jobs:
         with:
           name: k8s-prowler
           repository: devopzilla/charts
-          tag: ${{ steps.meta.outputs.tag }}
+          tag: ${{ steps.meta.outputs.tags }}
           path: chart
           registry: ${{ env.REGISTRY }}
           registry_username: ${{ github.actor }}
