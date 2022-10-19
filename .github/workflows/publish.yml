@@ -89,4 +89,6 @@ jobs:
 
             echo "${{ secrets.GITHUB_TOKEN }}" | helmv3 registry login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
 
-            HELM_EXPERIMENTAL_OCI=1 helmv3 push ${PKG_NAME} oci:// ${{ env.REGISTRY }}/devopzilla/charts
+            helmv3 push ${PKG_NAME} oci:// ${{ env.REGISTRY }}/devopzilla/charts
+        env:
+          HELM_EXPERIMENTAL_OCI: 1
